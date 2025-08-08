@@ -9,19 +9,19 @@ interface UserRequest {
 
 class CreateUserService {
   async execute({ name, email, password }: UserRequest) {
-    // verificar se ele enviou um email
+    // Verify if email exists
     if (!email) {
       throw new Error("Email incorrect");
     }
 
-    // verificar se o email já está cadastrado na plataforma
-    const userAlreadyExisits = await prismaClient.user.findFirst({
+    // Verify if email is already registered
+    const userAlreadyExists = await prismaClient.user.findFirst({
       where: {
         email: email,
       },
     });
 
-    if (userAlreadyExisits) {
+    if (userAlreadyExists) {
       throw new Error("User already exists");
     }
 

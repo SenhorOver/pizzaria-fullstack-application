@@ -7,11 +7,13 @@ import { isAuthenticated } from "./middlewares/isAuthenticated";
 
 const router = Router();
 
-// -- ROTAS USER --
+// -- ROUTES USER --
 router.post("/users", new CreateUserController().handle);
 
 router.post("/session", new AuthUserController().handle);
 
 router.get("/me", isAuthenticated, new DetailUserController().handle);
+
+// -- ROUTES CATEGORY
 
 export { router };
