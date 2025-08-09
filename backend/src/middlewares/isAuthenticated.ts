@@ -10,7 +10,7 @@ export function isAuthenticated(
   res: Response,
   next: NextFunction,
 ) {
-  // Receber token
+  // Retrieve token
   const authToken = req.headers.authorization;
 
   if (!authToken) {
@@ -20,13 +20,13 @@ export function isAuthenticated(
   const [, token] = authToken.split(" ");
 
   try {
-    // Validar token
+    // Validate token
     const { sub } = verify(
       token as string,
       process.env.JWT_SECRET as string,
     ) as Payload;
 
-    // Recuperar id do token e colocar dentro de uma variável user_id dentro do req.
+    // Take user id from token and put into user_id variable in req object
     req.user_id = sub;
 
     return next();
