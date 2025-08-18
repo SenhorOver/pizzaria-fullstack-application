@@ -14,7 +14,7 @@ interface ModalPickerProps {
   selectedItem: (item: CategoryProps) => void;
 }
 
-const { width: WIDTH /*, height: HEIGHT */ } = Dimensions.get("window");
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
 
 export function ModalPicker({
   handleCloseModal,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderColor: "#8a8a8a",
     borderRadius: 4,
     borderWidth: 1,
-    //height: HEIGHT/2,
+    height: HEIGHT / 2,
     width: WIDTH - 20,
   },
   item: {
