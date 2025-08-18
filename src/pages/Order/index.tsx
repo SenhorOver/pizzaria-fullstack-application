@@ -1,14 +1,14 @@
 import { Feather } from "@expo/vector-icons";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import {
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { api } from "../../services/api";
 
 type RouteDetailParams = {
   Order: {
@@ -20,29 +20,43 @@ type RouteDetailParams = {
 type OrderRouteProps = RouteProp<RouteDetailParams, "Order">;
 
 export default function Order() {
+  const navigation = useNavigation();
   const route = useRoute<OrderRouteProps>();
+
+  async function handleCloseOrder() {
+    try {
+      await api.delete("/order", {
+        params: {
+          order_id: route.params?.order_id,
+        },
+      });
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Mesa {route.params.number}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleCloseOrder}>
           <Feather name="trash-2" size={28} color={"#ff3f4b"} />
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={styles.input}>
-        <Text style={{ color: "#fff" }}>Pizzas</Text>
+        <Text style={styles.text}>Pizzas</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.input}>
-        <Text style={{ color: "#fff" }}>Pizza de calabresa</Text>
+        <Text style={styles.text}>Pizza de calabresa</Text>
       </TouchableOpacity>
 
       <View style={styles.qtdContainer}>
         <Text style={styles.qtdText}>Quantidade</Text>
         <TextInput
           style={styles.qtdInput}
-          placeholder="1"
+          placeholder="0"
           placeholderTextColor={"#707070"}
           keyboardType="numeric"
         />
@@ -120,6 +134,7 @@ const styles = StyleSheet.create({
   qtdInput: {
     alignItems: "center",
     backgroundColor: "#101026",
+    color: "#fff",
     fontSize: 20,
     justifyContent: "center",
     textAlign: "center",
@@ -129,6 +144,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  text: {
+    color: "#FFF",
   },
   title: {
     color: "#fff",
