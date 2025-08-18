@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { StackParamsList } from "../../routes/app.routes";
+import { api } from "../../services/api";
 
 export default function Dashboard() {
   const navigation =
@@ -21,10 +22,12 @@ export default function Dashboard() {
       return;
     }
 
+    const response = await api.post("/order", { table: Number(number) });
+
     // Send req to open table endpoint and navigate to next page
     navigation.navigate("Order", {
       number,
-      order_id: "d2837202-53f2-4e83-beb0-d17db29f8549",
+      order_id: response.data.id,
     });
 
     setNumber("");
