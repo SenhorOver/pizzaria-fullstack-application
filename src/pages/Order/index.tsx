@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   View,
   Modal,
+  FlatList,
 } from "react-native";
 import { api } from "../../services/api";
 import { useEffect, useState } from "react";
 import { ModalPicker } from "../../components/ModalPicker";
+import { ListItem } from "../../components/ListItem";
 
 type RouteDetailParams = {
   Order: {
@@ -32,6 +34,13 @@ export type ProductProps = {
   name: string;
 };
 
+export type ItemProps = {
+  id: string;
+  product_id: string;
+  name: string;
+  amount: string | number;
+};
+
 export default function Order() {
   const navigation = useNavigation();
   const route = useRoute<OrderRouteProps>();
@@ -49,6 +58,7 @@ export default function Order() {
   const [modalProductVisible, setModalProductVisible] = useState(false);
 
   const [amount, setAmount] = useState("1");
+  const [items, setItems] = useState<ItemProps[]>([]);
 
   useEffect(() => {
     async function loadInfo() {
@@ -94,13 +104,51 @@ export default function Order() {
     setProductSelected(item);
   }
 
+  async function handleAdd() {
+    const response = await api.post("/order/add", {
+      order_id: route.params.order_id,
+      product_id: productSelected?.id,
+      amount: Number(amount),
+    });
+
+    const data: ItemProps = {
+      amount: response.data.amount,
+      id: response.data.id,
+      name: productSelected?.name as string,
+      product_id: response.data.product_id,
+    };
+
+    setItems((oldItems) => [...oldItems, data]);
+  }
+
+  const dynamicDisabledButtonStyle = {
+    opacity: items.length === 0 ? 0.3 : 1,
+  };
+
+  async function handleDeleteItem(item_id: string) {
+    try {
+      await api.delete("/order/remove", {
+        params: {
+          item_id: item_id,
+        },
+      });
+
+      const newItems = items.filter((oldItem) => oldItem.id !== item_id);
+      setItems(newItems);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Mesa {route.params.number}</Text>
-        <TouchableOpacity onPress={handleCloseOrder}>
-          <Feather name="trash-2" size={28} color={"#ff3f4b"} />
-        </TouchableOpacity>
+        {items.length === 0 && (
+          <TouchableOpacity onPress={handleCloseOrder}>
+            <Feather name="trash-2" size={28} color={"#ff3f4b"} />
+          </TouchableOpacity>
+        )}
       </View>
 
       {category.length !== 0 && (
@@ -132,13 +180,26 @@ export default function Order() {
       </View>
 
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.buttonAdd}>
+        <TouchableOpacity style={styles.buttonAdd} onPress={handleAdd}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={[styles.button, dynamicDisabledButtonStyle]}
+          disabled={items.length === 0}
+        >
           <Text style={styles.buttonText}>Avançar</Text>
         </TouchableOpacity>
       </View>
+
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        style={styles.list}
+        data={items}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <ListItem data={item} deleteItem={handleDeleteItem} />
+        )}
+      />
 
       <Modal
         transparent={true}
@@ -217,6 +278,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     width: "100%",
+  },
+  list: {
+    flex: 1,
+    marginTop: 24,
   },
   qtdContainer: {
     alignItems: "center",

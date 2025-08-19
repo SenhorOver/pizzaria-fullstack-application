@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { CategoryProps } from "../../pages/Order";
+import { CategoryProps, ProductProps } from "../../pages/Order";
 
 interface ModalPickerProps {
-  options: CategoryProps[];
+  options: CategoryProps[] | ProductProps[];
   handleCloseModal: () => void;
-  selectedItem: (item: CategoryProps) => void;
+  selectedItem: (item: CategoryProps | ProductProps) => void;
 }
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("window");
@@ -21,7 +21,7 @@ export function ModalPicker({
   options,
   selectedItem,
 }: ModalPickerProps) {
-  function onPressItem(item: CategoryProps) {
+  function onPressItem(item: CategoryProps | ProductProps) {
     selectedItem(item);
     handleCloseModal();
   }
