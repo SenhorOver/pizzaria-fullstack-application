@@ -144,7 +144,10 @@ export default function Order() {
   }
 
   function handleFinishOrder() {
-    navigation.navigate("FinishOrder");
+    navigation.navigate("FinishOrder", {
+      order_id: route.params.order_id,
+      number: route.params.number,
+    });
   }
 
   return (
