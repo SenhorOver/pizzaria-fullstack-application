@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../../../styles/home.module.scss";
 
-import logoImg from "../../../public/logo.svg";
+import logoImg from "../../assets/logo.svg";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
