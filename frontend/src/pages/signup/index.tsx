@@ -1,31 +1,33 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "../../styles/home.module.scss";
+import styles from "../../../styles/home.module.scss";
 
-import logoImg from "../../public/logo.svg";
+import logoImg from "../../../public/logo.svg";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-export default function Home() {
+export default function SignUp() {
   return (
     <>
       <Head>
-        <title>SujeitoPizza - Faça seu login</title>
+        <title>Faça seu cadastro agora!</title>
       </Head>
       <div className={styles.containerCenter}>
         <Image src={logoImg} alt="Logo Sujeito Pizzaria" width={300} />
         <div className={styles.login}>
+          <h1>Criando sua conta</h1>
           <form>
+            <Input type="text" placeholder="Digite seu nome..." />
             <Input type="text" placeholder="Digite seu email..." />
             <Input type="password" placeholder="Digite sua senha..." />
             <Button type="submit" loading={false}>
-              Acessar
+              Cadastrar
             </Button>
           </form>
 
-          <Link href="/signup">
-            <p className={styles.text}>Não possui uma conta? Cadastre-se</p>
+          <Link href="/">
+            <p className={styles.text}>Já possui uma conta? Faça login!</p>
           </Link>
         </div>
       </div>
