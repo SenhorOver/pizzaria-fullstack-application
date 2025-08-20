@@ -33,7 +33,7 @@ export default function FinishOrder() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.alert}>Você deseja finalizar ese pedido?</Text>
+      <Text style={styles.alert}>Você deseja finalizar esse pedido?</Text>
       <Text style={styles.title}>Mesa {route.params.number}</Text>
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.textButton}>Finalizar Pedido</Text>
