@@ -8,9 +8,10 @@
   transition: filter 0.2s;
 
   &[disabled] {
+    opacity: 0.5;
     cursor: not-allowed;
     svg {
-      animation: animate 2s infinite;
+      animation: animate 2s linear infinite;
     }
   }
 

@@ -26,7 +26,7 @@ export default function Home() {
         <Image src={logoImg} alt="Logo Sujeito Pizzaria" width={300} />
         <div className={styles.login}>
           <form onSubmit={handleLogin}>
-            <Input type="text" placeholder="Digite seu email..." />
+            <Input type="email" placeholder="Digite seu email..." />
             <Input type="password" placeholder="Digite sua senha..." />
             <Button type="submit" loading={false}>
               Acessar

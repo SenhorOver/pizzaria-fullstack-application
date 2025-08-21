@@ -19,7 +19,7 @@ export default function SignUp() {
           <h1>Criando sua conta</h1>
           <form>
             <Input type="text" placeholder="Digite seu nome..." />
-            <Input type="text" placeholder="Digite seu email..." />
+            <Input type="email" placeholder="Digite seu email..." />
             <Input type="password" placeholder="Digite sua senha..." />
             <Button type="submit" loading={false}>
               Cadastrar
