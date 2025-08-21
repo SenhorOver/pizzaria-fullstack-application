@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styles from "../../styles/home.module.scss";
 
 import logoImg from "../assets/logo.svg";
@@ -10,11 +10,13 @@ import { Button } from "@/components/ui/Button";
 import { AuthContext } from "@/contexts/AuthContext";
 
 export default function Home() {
-  const { signIn } = useContext(AuthContext);
+  const { signIn, authLoading } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    await signIn({ email: "asd", password: "sadf" });
+    await signIn({ email, password });
   }
 
   return (
@@ -26,9 +28,19 @@ export default function Home() {
         <Image src={logoImg} alt="Logo Sujeito Pizzaria" width={300} />
         <div className={styles.login}>
           <form onSubmit={handleLogin}>
-            <Input type="email" placeholder="Digite seu email..." />
-            <Input type="password" placeholder="Digite sua senha..." />
-            <Button type="submit" loading={false}>
+            <Input
+              type="email"
+              placeholder="Digite seu email..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Digite sua senha..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" loading={authLoading}>
               Acessar
             </Button>
           </form>
