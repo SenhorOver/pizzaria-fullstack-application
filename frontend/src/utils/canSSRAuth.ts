@@ -33,13 +33,11 @@ export function canSSRAuth<P extends Record<string, any>>(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       if (response.status === 404 || response.status === 401) {
         throw new Error("Token Invalid");
       }
       return await fn(ctx);
     } catch (err) {
-      console.log("Caiu no erro", err);
       if (err instanceof AuthTokenError) {
         destroyCookie(ctx, "@nextauth.token");
         return {
