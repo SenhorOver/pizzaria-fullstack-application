@@ -27,15 +27,6 @@ export function canSSRAuth<P extends Record<string, any>>(
     }
 
     try {
-      const response = await fetch("http://localhost:3333/me", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 404 || response.status === 401) {
-        throw new Error("Token Invalid");
-      }
       return await fn(ctx);
     } catch (err) {
       if (err instanceof AuthTokenError) {
