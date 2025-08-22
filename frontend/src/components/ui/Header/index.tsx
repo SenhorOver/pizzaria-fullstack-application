@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FiLogOut } from "react-icons/fi";
 import { AuthContext } from "@/contexts/AuthContext";
 import { useContext } from "react";
+import logoImg from "../../../assets/logo.svg";
 
 export function Header() {
   const { signOut } = useContext(AuthContext);
@@ -12,12 +13,7 @@ export function Header() {
     <header className={styles.headerContainer}>
       <div className={styles.headerContent}>
         <Link href={"/dashboard"}>
-          <Image
-            src={"/favicon.svg"}
-            width={250}
-            height={75}
-            alt="Logo do site Sujeiro Pizzaria"
-          />
+          <Image src={logoImg} alt="Logo do site Sujeiro Pizzaria" />
         </Link>
         <nav className={styles.menuNav}>
           <Link href={"/category"}>
