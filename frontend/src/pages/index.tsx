@@ -16,7 +16,12 @@ export default function Home() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    await signIn({ email, password });
+
+    if (email === "" || password === "") {
+      return;
+    }
+
+    await signIn({ email: email.toLowerCase(), password });
   }
 
   return (

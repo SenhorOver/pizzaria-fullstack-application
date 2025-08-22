@@ -9,6 +9,7 @@ interface AuthContextData {
   authLoading: boolean;
   signIn: (credentials: SignInProps) => Promise<void>;
   signOut: () => void;
+  signUp: (credentials: SignUpProps) => Promise<void>;
 }
 
 interface UserProps {
@@ -22,6 +23,12 @@ interface AuthProviderProps {
 }
 
 interface SignInProps {
+  email: string;
+  password: string;
+}
+
+interface SignUpProps {
+  name: string;
   email: string;
   password: string;
 }
@@ -75,9 +82,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setAuthLoading(false);
   }
 
+  async function signUp({ name, email, password }: SignUpProps) {
+    setAuthLoading(true);
+
+    try {
+      await api.post("/users", {
+        name,
+        email,
+        password,
+      });
+      console.log("Cadastrado com sucesso!");
+      Router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+
+    setAuthLoading(false);
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, authLoading, signIn, signOut }}
+      value={{ user, isAuthenticated, authLoading, signIn, signOut, signUp }}
     >
       {children}
     </AuthContext.Provider>

@@ -6,8 +6,25 @@ import styles from "../../../styles/home.module.scss";
 import logoImg from "../../assets/logo.svg";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useContext, useState } from "react";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function SignUp() {
+  const { authLoading, signUp } = useContext(AuthContext);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSignUp(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (name === "" || email === "" || password === "") {
+      return;
+    }
+
+    await signUp({ name, email: email.toLowerCase(), password });
+  }
+
   return (
     <>
       <Head>
@@ -17,11 +34,26 @@ export default function SignUp() {
         <Image src={logoImg} alt="Logo Sujeito Pizzaria" width={300} />
         <div className={styles.login}>
           <h1>Criando sua conta</h1>
-          <form>
-            <Input type="text" placeholder="Digite seu nome..." />
-            <Input type="email" placeholder="Digite seu email..." />
-            <Input type="password" placeholder="Digite sua senha..." />
-            <Button type="submit" loading={false}>
+          <form onSubmit={handleSignUp}>
+            <Input
+              type="text"
+              placeholder="Digite seu nome..."
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <Input
+              type="email"
+              placeholder="Digite seu email..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Digite sua senha..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" loading={authLoading}>
               Cadastrar
             </Button>
           </form>
