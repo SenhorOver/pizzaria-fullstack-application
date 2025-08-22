@@ -54,6 +54,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = !!user.name;
 
   useEffect(() => {
+    setAuthLoading(true);
     const { "@nextauth.token": token } = parseCookies();
     if (token) {
       api
@@ -69,7 +70,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         })
         .catch(() => {
           signOut();
-        });
+        })
+        .finally(() => setAuthLoading(false));
+    } else {
+      setAuthLoading(false);
     }
   }, []);
 
