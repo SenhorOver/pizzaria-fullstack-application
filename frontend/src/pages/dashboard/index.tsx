@@ -3,8 +3,28 @@ import { canSSRAuth } from "@/utils/canSSRAuth";
 import Head from "next/head";
 import styles from "./styles.module.scss";
 import { FiRefreshCcw } from "react-icons/fi";
+import { setupApiClient } from "@/services/api";
+import { useState } from "react";
 
-export default function Dashboard() {
+interface OrderProps {
+  id: string;
+  table: string | number;
+  status: boolean;
+  draft: boolean;
+  name: string | null;
+}
+
+interface HomeProps {
+  orders: OrderProps[];
+}
+
+export default function Dashboard({ orders }: HomeProps) {
+  const [orderList, setOrderList] = useState(orders || []);
+
+  function handleOpenModalView(id: string) {
+    console.log(id);
+  }
+
   return (
     <>
       <Head>
@@ -21,12 +41,14 @@ export default function Dashboard() {
           </div>
 
           <article className={styles.listOrders}>
-            <section className={styles.orderItem}>
-              <button>
-                <div className={styles.tag}></div>
-                <span>Mesa 30</span>
-              </button>
-            </section>
+            {orderList.map((item) => (
+              <section key={item.id} className={styles.orderItem}>
+                <button onClick={() => handleOpenModalView(item.id)}>
+                  <div className={styles.tag}></div>
+                  <span>Mesa {item.table}</span>
+                </button>
+              </section>
+            ))}
           </article>
         </main>
       </div>
@@ -34,6 +56,14 @@ export default function Dashboard() {
   );
 }
 
-export const getServerSideProps = canSSRAuth(async () => {
-  return { props: {} };
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  const api = setupApiClient(ctx);
+
+  const response = await api.get("/orders");
+
+  return {
+    props: {
+      orders: response.data,
+    },
+  };
 });
