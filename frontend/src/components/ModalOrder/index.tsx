@@ -60,12 +60,13 @@ export function ModalOrder({
           R$
           <strong>
             {" "}
-            {order.reduce(
-              (acc, item) =>
-                Number(item.product.price) * Number(item.amount) + acc,
-              0,
-            )}
-            ,00
+            {order
+              .reduce(
+                (acc, item) =>
+                  Number(item.product.price) * Number(item.amount) + acc,
+                0,
+              )
+              .toFixed(2)}
           </strong>
         </p>
 
