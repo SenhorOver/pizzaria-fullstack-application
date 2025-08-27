@@ -1,10 +1,10 @@
 import Link from "next/link";
-import styles from "./style.module.scss";
+import styles from "./styles.module.scss";
 import Image from "next/image";
 import { FiLogOut } from "react-icons/fi";
 import { AuthContext } from "@/contexts/AuthContext";
 import { useContext } from "react";
-import logoImg from "../../../assets/logo.svg";
+import logoImg from "../../assets/logo.svg";
 
 export function Header() {
   const { signOut } = useContext(AuthContext);

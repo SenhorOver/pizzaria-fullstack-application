@@ -1,4 +1,4 @@
-import { Header } from "@/components/ui/Header";
+import { Header } from "@/components/Header";
 import Head from "next/head";
 import styles from "./styles.module.scss";
 import { useState } from "react";

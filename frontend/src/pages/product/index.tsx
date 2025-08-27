@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "./styles.module.scss";
 import { canSSRAuth } from "@/utils/canSSRAuth";
-import { Header } from "@/components/ui/Header";
+import { Header } from "@/components/Header";
 import { FiUpload } from "react-icons/fi";
 import { useState } from "react";
 import Image from "next/image";
