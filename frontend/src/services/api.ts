@@ -12,8 +12,14 @@ export function setupApiClient(
 ) {
   const cookies = parseCookies(ctx);
 
+  const isServer = typeof window === "undefined";
+
+  const baseURL = isServer
+    ? process.env.NEXT_PUBLIC_API_URL
+    : "http://localhost:3333";
+
   const api = axios.create({
-    baseURL: "http://localhost:3333",
+    baseURL: baseURL,
     headers: {
       Authorization: `Bearer ${cookies["@nextauth.token"]}`,
     },
