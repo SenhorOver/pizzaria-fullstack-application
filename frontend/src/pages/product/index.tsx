@@ -75,6 +75,7 @@ export default function Product({ categoryList }: CategoryProps) {
       setPrice("");
       setDescription("");
       setImageAvatar(null);
+      setAvatarUrl("");
     } catch (e) {
       console.log(e);
       toast.error("Ops erro ao cadastrar!");
