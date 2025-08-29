@@ -6,7 +6,8 @@ import {
 } from "next";
 import { parseCookies, destroyCookie } from "nookies";
 
-// Only Authenticated - Invalid Token redirect on AuthContext
+// Only Authenticated - Invalid Token redirect on AuthContext (delay) -
+// Or on request made inside GetServerSideProps from page (no delay)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function canSSRAuth<P extends Record<string, any>>(
   fn: GetServerSideProps<P>,
@@ -49,7 +50,7 @@ export function canSSRAuth<P extends Record<string, any>>(
   };
 }
 
-// Only Authenticated - Invalid Token redirect on SSR
+// Only Authenticated - Invalid Token redirect on SSR (no delay)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function canSSRAuthNoRender<P extends Record<string, any>>(
   fn: GetServerSideProps<P>,
