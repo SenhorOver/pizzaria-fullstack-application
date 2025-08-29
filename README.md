@@ -49,6 +49,14 @@ Cadastrar produtos
 
 Entre outras páginas...
 
+## Backend
+
+O Backend que recebe todas as requisições do App ou da WEB, seja de login, cadastro, adicionar pedidos, produtos, etc. E processa as informações para retornar uma resposta satisfatória, possível ver todos os endpoints via Insomnia:
+
+[Arquivo](https://github.com/SenhorOver/pizzaria-fullstack-application/blob/master/backend/Insomnia_2025-08-29.yaml)
+
+- Para acessar os endpoints é necessário primeiro fazer o cadastro e depois o login, dessa forma o token já vai ser colocado em uma variável de ambiente o resto da aplicação automaticamente vai poder acessar os endpoints protegidos.
+
 # Tecnologias utilizadas
 
 ## App
