@@ -1,9 +1,10 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { api } from "../../services/api";
+import { api } from "../../services/apiCient";
 import { StackParamsList } from "../../routes/app.routes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { signOut } from "../../contexts/AuthContext";
 
 type RouteDetailParams = {
   FinishOrder: {
@@ -27,6 +28,7 @@ export default function FinishOrder() {
 
       navigation.popToTop();
     } catch (error) {
+      signOut();
       console.log(error);
     }
   }

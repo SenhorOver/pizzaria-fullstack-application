@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { api } from "../services/api";
+import { api } from "../services/apiCient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthContextData {
@@ -11,7 +11,7 @@ interface AuthContextData {
   loadingAuth: boolean;
 }
 
-interface UserProps {
+export interface UserProps {
   id: string;
   name: string;
   email: string;
@@ -28,6 +28,10 @@ interface SignInProps {
 }
 
 export const AuthContext = createContext({} as AuthContextData);
+
+export async function signOut() {
+  await AsyncStorage.clear();
+}
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({
@@ -50,13 +54,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // Verify if user info exists
       if (Object.keys(hasUser).length > 0) {
         api.defaults.headers.common["Authorization"] =
-          `Bearer ${hasUser.token}`;
+          `Bearer ${hasUser.token}'`;
 
         setUser({
           id: hasUser.id,
           name: hasUser.name,
           email: hasUser.email,
           token: hasUser.token,
+        });
+      } else {
+        setUser({
+          id: "",
+          name: "",
+          email: "",
+          token: "",
         });
       }
 
@@ -66,12 +77,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     getUser();
   }, []);
 
+  async function signOut() {
+    await AsyncStorage.clear().then(() => {
+      setUser({
+        id: "",
+        name: "",
+        email: "",
+        token: "",
+      });
+    });
+  }
+
   async function signIn({ email, password }: SignInProps) {
     setLoadingAuth(true);
 
     try {
+      const lowerEmail = email.toLowerCase();
       const response = await api.post("/session", {
-        email,
+        email: lowerEmail,
         password,
       });
 
@@ -97,17 +120,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.log("error", err);
       setLoadingAuth(false);
     }
-  }
-
-  async function signOut() {
-    await AsyncStorage.clear().then(() => {
-      setUser({
-        id: "",
-        name: "",
-        email: "",
-        token: "",
-      });
-    });
   }
 
   return (

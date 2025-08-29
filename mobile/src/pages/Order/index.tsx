@@ -10,12 +10,13 @@ import {
   Modal,
   FlatList,
 } from "react-native";
-import { api } from "../../services/api";
+import { api } from "../../services/apiCient";
 import { useEffect, useState } from "react";
 import { ModalPicker } from "../../components/ModalPicker";
 import { ListItem } from "../../components/ListItem";
 import { StackParamsList } from "../../routes/app.routes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { signOut } from "../../contexts/AuthContext";
 
 type RouteDetailParams = {
   Order: {
@@ -65,10 +66,13 @@ export default function Order() {
 
   useEffect(() => {
     async function loadInfo() {
-      const response = await api.get("/category");
-
-      setCategory(response.data);
-      setCategorySelected(response.data[0]);
+      try {
+        const response = await api.get("/category");
+        setCategory(response.data);
+        setCategorySelected(response.data[0]);
+      } catch (err) {
+        signOut();
+      }
     }
 
     loadInfo();
@@ -76,12 +80,16 @@ export default function Order() {
 
   useEffect(() => {
     async function loadProducts() {
-      const response = await api.get("/category/product", {
-        params: { category_id: categorySelected?.id },
-      });
+      try {
+        const response = await api.get("/category/product", {
+          params: { category_id: categorySelected?.id },
+        });
 
-      setProducts(response.data);
-      setProductSelected(response.data[0]);
+        setProducts(response.data);
+        setProductSelected(response.data[0]);
+      } catch (err) {
+        signOut();
+      }
     }
 
     loadProducts();
@@ -96,6 +104,7 @@ export default function Order() {
       });
       navigation.goBack();
     } catch (error) {
+      signOut();
       console.log(error);
     }
   }
@@ -108,20 +117,24 @@ export default function Order() {
   }
 
   async function handleAdd() {
-    const response = await api.post("/order/add", {
-      order_id: route.params.order_id,
-      product_id: productSelected?.id,
-      amount: Number(amount),
-    });
+    try {
+      const response = await api.post("/order/add", {
+        order_id: route.params.order_id,
+        product_id: productSelected?.id,
+        amount: Number(amount),
+      });
 
-    const data: ItemProps = {
-      amount: response.data.amount,
-      id: response.data.id,
-      name: productSelected?.name as string,
-      product_id: response.data.product_id,
-    };
+      const data: ItemProps = {
+        amount: response.data.amount,
+        id: response.data.id,
+        name: productSelected?.name as string,
+        product_id: response.data.product_id,
+      };
 
-    setItems((oldItems) => [...oldItems, data]);
+      setItems((oldItems) => [...oldItems, data]);
+    } catch (err) {
+      signOut();
+    }
   }
 
   const dynamicDisabledButtonStyle = {
@@ -139,6 +152,7 @@ export default function Order() {
       const newItems = items.filter((oldItem) => oldItem.id !== item_id);
       setItems(newItems);
     } catch (error) {
+      signOut();
       console.log(error);
     }
   }

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -10,11 +10,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { StackParamsList } from "../../routes/app.routes";
-import { api } from "../../services/api";
+import { api } from "../../services/apiCient";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
   const navigation =
     useNavigation<NativeStackNavigationProp<StackParamsList>>();
+  const { signOut } = useContext(AuthContext);
   const [number, setNumber] = useState("");
 
   async function openOrder() {
@@ -22,15 +24,19 @@ export default function Dashboard() {
       return;
     }
 
-    const response = await api.post("/order", { table: Number(number) });
+    try {
+      const response = await api.post("/order", { table: Number(number) });
 
-    // Send req to open table endpoint and navigate to next page
-    navigation.navigate("Order", {
-      number,
-      order_id: response.data.id,
-    });
+      // Send req to open table endpoint and navigate to next page
+      navigation.navigate("Order", {
+        number,
+        order_id: response.data.id,
+      });
 
-    setNumber("");
+      setNumber("");
+    } catch (err) {
+      signOut();
+    }
   }
 
   return (
