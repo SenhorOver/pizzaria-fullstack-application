@@ -2,7 +2,7 @@ services:
   api:
     container_name: pizzaria-backend
     build:
-      context: ../pizzaria
+      context: ../pizzaria-fullstack-application
       args:
         DATABASE_URL: "postgresql://exemplouser:exemplosenha@db:5432/pizzaria?schema=public"
         JWT_SECRET: qlqSecret
@@ -29,7 +29,7 @@ services:
 
   frontend:
     build:
-      context: ../pizzaria
+      context: ../pizzaria-fullstack-application
       dockerfile: ./frontend/Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://api:3333
