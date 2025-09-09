@@ -4,7 +4,7 @@
 
 # Sobre o projeto
 
-Sujeito pizzaria é uma aplicação fullstack, que possui todo o funcionamento necessário para funcionar em um estabelecimento real.
+Sujeito pizzaria é uma aplicação fullstack, que possui estrutura suficiente para funcionar em um estabelecimento real.
 
 Sujeito pizzaria possui um banco de dados que armazena as categorias e produtos cadastrados, além de armazenar pedidos feitos por clientes e os respectivos itens associado com os pedidos.
 
